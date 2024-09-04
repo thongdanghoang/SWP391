@@ -1,6 +1,5 @@
 package vn.id.thongdanghoang.ecommerce.user_service.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,10 +8,7 @@ import vn.id.thongdanghoang.ecommerce.user_service.entity.UserEntity;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
-public class SecurityUser implements UserDetails {
-
-    private final UserEntity user;
+public record SecurityUser(UserEntity user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -27,32 +23,32 @@ public class SecurityUser implements UserDetails {
     }
 
     @Override
+    public boolean isEnabled() {
+        return user.isEnabled();
+    }
+
+    @Override
     public String getPassword() {
         return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getPassword();
+        return this.user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return UserDetails.super.isAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return UserDetails.super.isAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return user.isEnabled();
+        return UserDetails.super.isCredentialsNonExpired();
     }
 }
