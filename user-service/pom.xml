@@ -28,12 +28,35 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<commons-lang3.version>3.16.0</commons-lang3.version>
+		<commons-text.version>1.12.0</commons-text.version>
+		<commons-collections4.version>4.4</commons-collections4.version>
 	</properties>
 	<dependencies>
-		<!--	Core	-->
+		<!--	Utils	-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.6.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>${commons-text.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections4.version}</version>
 		</dependency>
 		<!--	Security	-->
 		<dependency>
