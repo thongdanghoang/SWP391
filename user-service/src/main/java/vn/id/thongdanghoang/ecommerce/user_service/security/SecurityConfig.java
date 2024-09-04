@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.ecommerce.user_service.config;
+package vn.id.thongdanghoang.ecommerce.user_service.security;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -57,7 +57,7 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
+    public SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http)
             throws Exception {
 
         // TODO: CSRF and CORS configurations -> chapters 9 and 10.
