@@ -18,4 +18,4 @@ spring:
   flyway:
     baseline-on-migrate: false
     locations:
-    - classpath:db/migrations
+    - classpath:db/migration
