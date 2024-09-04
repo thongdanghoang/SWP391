@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -25,7 +22,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
@@ -69,26 +65,17 @@ public class SecurityConfig {
         http.formLogin(Customizer.withDefaults());
 
         http.authorizeHttpRequests(
-                c -> c.anyRequest().authenticated()
+                c -> c
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated()
         );
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        // TODO: replace with a real user store -> chapters 3 and 4.
-        UserDetails userDetails = User.withUsername("bill")
-                .password("password")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
-        // TODO: use a password encoder with a strong hash function such as BCrypt
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -98,7 +85,7 @@ public class SecurityConfig {
                 RegisteredClient
                         .withId(UUID.randomUUID().toString())
                         .clientId("client")
-                        .clientSecret("secret")
+                        .clientSecret(passwordEncoder().encode("secret"))
                         .clientAuthenticationMethod(
                                 ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                         .authorizationGrantType(
