@@ -28,24 +28,11 @@ public class UserSecurityService implements UserDetailsService {
     }
 
     public void createUser(UserEntity user) {
-        var hashed = passwordEncoder.encode(user.getPassword());
-    }
-
-    public void updateUser(UserEntity user) {
-
-    }
-
-    public void deleteUser(String username) {
-
-    }
-
-    public void changePassword(String oldPassword, String newPassword) {
-        if (passwordEncoder.matches(oldPassword, newPassword)) {
-            var hashed = passwordEncoder.encode(newPassword);
-        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     public boolean userExists(String username) {
-        return StringUtils.isNoneBlank( username) && userRepository.existsByUsername(username);
+        return StringUtils.isNoneBlank(username) && userRepository.existsByUsername(username);
     }
 }
